@@ -1,5 +1,5 @@
 server:
-  port: 8583
+  port: 9093
 
 spring:
   application:
@@ -10,13 +10,15 @@ spring:
     gateway:
       routes:
         - id: user-accounts
-          uri: http://localhost:8075/
+          uri: lb://user-accounts
           predicates:
             - Path=/user-accounts/**
         - id: api-interceptor
-          uri: http://localhost:8068/
+          uri: lb://api-interceptor
           predicates:
-            - Path=/api-interceptor/**
+#            - Path=/v1/bible-reader/**
+            - Path=/v1/got/**
+#            - Path=/v1/news/**
 
 
 # Discovery Server Access
@@ -27,7 +29,7 @@ eureka:
     lease-expiration-duration-in-seconds: 2
   client:
     registerWithEureka: true
-    fetchRegistry: false
+    fetchRegistry: true
     serviceUrl:
       defaultZone: http://localhost:8762/eureka/
     healthcheck:
